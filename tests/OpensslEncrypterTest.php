@@ -16,8 +16,6 @@ namespace Ueef\Encoder\Tests {
             $a = $encrypter->encrypt($payload);
             $b = $encrypter->decrypt($a);
 
-            exit;
-
 
             $this->assertEquals($payload, $b);
         }
