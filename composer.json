@@ -1,6 +1,7 @@
 {
   "name": "ueef/encrypter",
   "type": "library",
+  "license": "MIT",
   "description": "",
   "authors": [
     {
