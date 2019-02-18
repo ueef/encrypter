@@ -20,10 +20,6 @@ class OpensslEncrypter implements EncrypterInterface
 
     public function __construct(string $key, string $method)
     {
-        if (!in_array($method, openssl_get_cipher_methods())) {
-            throw new EncrypterException("unsupported encryption method " . $method);
-        }
-
         $this->key = $key;
         $this->method = $method;
         $this->iv_length = openssl_cipher_iv_length($method);
@@ -47,7 +43,14 @@ class OpensslEncrypter implements EncrypterInterface
         $value = base64_decode($value);
         $iv = substr($value, 0, $this->iv_length);
         $value = substr($value, $this->iv_length);
+        if (false === $value) {
+            return '';
+        }
+
         $value = openssl_decrypt($value, $this->method, $this->key, OPENSSL_RAW_DATA, $iv);
+        if (false === $value) {
+            return '';
+        }
 
         return $value;
     }

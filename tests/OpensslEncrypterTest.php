@@ -19,5 +19,12 @@ namespace Ueef\Encoder\Tests {
 
             $this->assertEquals($payload, $b);
         }
+
+        public function testIncorrectValue()
+        {
+            $encrypter = new OpensslEncrypter(random_bytes(16), 'AES-256-CBC');
+            $this->assertEquals($encrypter->decrypt(random_bytes(256)), '');
+            $this->assertEquals($encrypter->decrypt(''), '');
+        }
     }
 }
