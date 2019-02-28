@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ueef\Encrypter\Encrypters;
 
-use Ueef\Encrypter\Exceptions\EncrypterException;
+use Ueef\Encrypter\Exceptions\InvalidEncryptedStringException;
 use Ueef\Encrypter\Interfaces\EncrypterInterface;
 
 class OpensslEncrypter implements EncrypterInterface
@@ -44,12 +44,12 @@ class OpensslEncrypter implements EncrypterInterface
         $iv = substr($value, 0, $this->iv_length);
         $value = substr($value, $this->iv_length);
         if (false === $value) {
-            throw new EncrypterException("encrypted value is invalid");
+            throw new InvalidEncryptedStringException("encrypted string is invalid");
         }
 
         $value = openssl_decrypt($value, $this->method, $this->key, OPENSSL_RAW_DATA, $iv);
         if (false === $value) {
-            throw new EncrypterException("encrypted value is invalid");
+            throw new InvalidEncryptedStringException("encrypted string is invalid");
         }
 
         return $value;
