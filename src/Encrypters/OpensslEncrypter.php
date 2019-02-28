@@ -44,12 +44,12 @@ class OpensslEncrypter implements EncrypterInterface
         $iv = substr($value, 0, $this->iv_length);
         $value = substr($value, $this->iv_length);
         if (false === $value) {
-            return '';
+            throw new EncrypterException("encrypted value is invalid");
         }
 
         $value = openssl_decrypt($value, $this->method, $this->key, OPENSSL_RAW_DATA, $iv);
         if (false === $value) {
-            return '';
+            throw new EncrypterException("encrypted value is invalid");
         }
 
         return $value;
